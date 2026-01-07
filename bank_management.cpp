@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include<vector>
+#include<ctype.h>
+#include<algorithm>
 using namespace std;
 class bank_account
 {
@@ -17,20 +19,18 @@ public:
     void initialize()
     {
 
-        cout << "Enter the Account holder's Name :" << endl;
+        cout << "Enter the Account holder's Name : " << endl;
         getline(cin,account_name);
-        cout << "Enter the Account number :" << endl;
+        cout << "Enter the Account number : " << endl;
         cin >> account_number;
-        cout << "Enter the Account Type (Saving/Current) :" << endl;
+        cout << "Enter the Account Type (Saving/Current) : " << endl;
         cin >> account_type;
-        if (account_type == "Saving" || account_type == "Current")
-        {
-
-        }
-        else
-        {
-            cout << "\nIncorrect input \n Try again"<<endl;
-           
+        transform(account_type.begin(),account_type.end(),account_type.begin(),::tolower);
+        while(account_type != "saving" &&  account_type != "current"){
+            cout << "\nIncorrect input .Try again\n"<<endl;
+            cout << "Enter the Account Type (Saving/Current) :" << endl;
+            cin >> account_type;
+        transform(account_type.begin(),account_type.end(),account_type.begin(),::tolower);
         }
         cout << "Enter the Balance :" << endl;
         cin >> Balance;
@@ -87,8 +87,10 @@ int main()
     // mybank.initialize();
 
     do
-    {
-        cout << "\n<*****MENU*****>" << endl;
+        {
+        
+        cout<<"\n******* WELCOME TO AC INTERNATIONAL BANK *******"<<endl;
+        cout << "\n<***** MENU *****>" << endl;
         cout<<"1.Create New Account"<<endl;
         cout << "2.Deposit" << endl;
         cout << "3.Withdraw" << endl;
