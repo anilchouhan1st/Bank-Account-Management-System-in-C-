@@ -37,15 +37,16 @@ public:
     }
 
 public:
-    void deposit()
+    void Deposit()
     {
         int amount;
-        cout << "Enter the deposit amount" << endl;
+        cout << "Enter the Deposit amount" << endl;
         cin >> amount;
         if (amount > 0)
         {
             Balance += amount;
-            cout << "Total balance is " << Balance << endl;
+            cout<<"Rs."<<amount<<" is Deposit into your account Successfull "<<endl;
+            cout << "Total balance is Rs. " << Balance << endl;
         }
     }
 
@@ -55,10 +56,11 @@ public:
         int amount;
         cout << "Enter the Withdraw amount" << endl;
         cin >> amount;
-        if (amount > 0 && Balance > amount)
+        if (amount > 0 && Balance >= amount)
         {
             Balance -=amount;
-            cout << "Total remaining balance is " << Balance << endl;
+            cout<<"Rs."<<Balance<<" is Withdraw from your account Successfull "<<endl;
+            cout << "Total remaining balance is Rs." << Balance << endl;
         }
         else{
             cout<<"Not enought money"<<endl;
@@ -68,17 +70,45 @@ public:
 public:
     void Display()
     {
-        cout << "Account holder's Name :" << account_name << endl;
-        cout << "Account number :" << account_number << endl;
-        cout << "Account Type (Saving/Current) :" << account_type << endl;
-        cout << "Balance :" << Balance << endl;
+        cout << "Account holder's Name : " << account_name << endl;
+        cout << "Account number : " << account_number << endl;
+        cout << "Account Type (Saving/Current) : " << account_type << endl;
+        cout << "Balance : Rs. " << Balance << endl;
     }
 
-string getAccountNumber(){
+    string getAccountNumber(){
         return account_number;
     }
+    
+    
 };
+int FindAccountIndex(vector<bank_account> &account,string accN){
+        int found = -1;
+     for(int i =0;i<account.size();i++){
+         
+         
+            if(account[i].getAccountNumber()==accN){
+                found = 1;
+               return i;
+            }
+           }
+           if(found==-1){
+            cout<<"*****NO ACCOUNT FOUND*****"<<endl;
+           }
+        return found;    
+    }
 
+    int getIntputFromUser(vector<bank_account> &account){
+          if(account.empty()){
+                cout<<"There is no account present in database"<<endl;
+                return -1;
+            }
+           string accN;
+           cout<<"Enter Account number: "<<endl;
+           cin>>accN;
+           int IDex = FindAccountIndex(account,accN);
+    return IDex; 
+}
 vector<bank_account> Naccount;
 int main()
 {
@@ -112,35 +142,26 @@ int main()
         }
         case 2:
         {
-            mybank.deposit();
+           int IDex = getIntputFromUser(Naccount);
+           if(IDex!=-1) {
+            Naccount[IDex].Deposit();
+           }
             break;
         }
         case 3:
         {
-            mybank.Withdraw();
+           int IDex = getIntputFromUser(Naccount);
+           if(IDex!=-1) {
+            Naccount[IDex].Withdraw();
+           }
             break;
         }
         case 4:
         {
-            if(Naccount.empty()){
-                cout<<"There is no account present in database"<<endl;
-                break;
-            }
-           string accN;
-           cout<<"Enter Account number: "<<endl;
-           cin>>accN;
-           bool found = false;
-           for(auto acc:Naccount){
-            if(acc.getAccountNumber()==accN){
-                acc.Display();
-                found = true;
-                break;
-            }
+            int IDex = getIntputFromUser(Naccount);
+           if(IDex!=-1) {
+            Naccount[IDex].Display();
            }
-           if(!found){
-            cout<<"*****NO ACCOUNT FOUND*****"<<endl;
-           }
-            
             break;
         }
         case 5:
@@ -154,7 +175,7 @@ int main()
             break;
         }
         }
-    } while (choice != 4);
+    } while (choice != 5);
 
     return 0;
 }
