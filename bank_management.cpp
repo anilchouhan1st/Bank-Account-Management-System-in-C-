@@ -13,6 +13,7 @@ private:
     double Balance;
     string Saving;
     string Current;
+    string Pin;
 
 public:
     
@@ -32,7 +33,13 @@ public:
             cin >> account_type;
         transform(account_type.begin(),account_type.end(),account_type.begin(),::tolower);
         }
-        cout << "Enter the Balance :" << endl;
+        cout<<"Set 4-Digit PIN : "<< endl;
+        cin>>Pin;
+        while(Pin.size()!=4){
+            cout<<"PIN must be 4-Digit. Try again"<<endl;
+            cin>>Pin;
+        }
+        cout << "Enter the Balance : " << endl;
         cin >> Balance;
     }
 
@@ -79,7 +86,10 @@ public:
     string getAccountNumber(){
         return account_number;
     }
-    
+public:
+    string getPIN(){
+        return Pin;
+    }
     
 };
 int FindAccountIndex(vector<bank_account> &account,string accN){
@@ -109,9 +119,27 @@ int FindAccountIndex(vector<bank_account> &account,string accN){
            int IDex = FindAccountIndex(account,accN);
     return IDex; 
 }
-vector<bank_account> Naccount;
+bool verifingPin(bank_account &acc){
+    string entered;
+    int tries = 3;
+    while(tries--){
+        cout<<"Enter 4-Digit PIN "<<endl;
+        cin>>entered;
+        if(entered==acc.getPIN()){
+            return true;
+        }
+        else{
+            cout<<"Wrong PIN."<<endl;
+            cout<<tries<<" Tries remaining"<<endl;
+        }
+    }
+    cout<<"Account got locked "<<endl;
+
+    return false;
+}
 int main()
 {
+    vector<bank_account> Naccount;
     int choice;
     class bank_account mybank;
     // mybank.initialize();
@@ -143,6 +171,9 @@ int main()
         case 2:
         {
            int IDex = getIntputFromUser(Naccount);
+           if(!verifingPin(Naccount[IDex])){
+            break;
+           }
            if(IDex!=-1) {
             Naccount[IDex].Deposit();
            }
@@ -151,6 +182,9 @@ int main()
         case 3:
         {
            int IDex = getIntputFromUser(Naccount);
+           if(!verifingPin(Naccount[IDex])){
+            break;
+           }
            if(IDex!=-1) {
             Naccount[IDex].Withdraw();
            }
@@ -159,6 +193,9 @@ int main()
         case 4:
         {
             int IDex = getIntputFromUser(Naccount);
+            if(!verifingPin(Naccount[IDex])){
+            break;
+           }
            if(IDex!=-1) {
             Naccount[IDex].Display();
            }
