@@ -83,6 +83,24 @@ public:
         cout << "Balance : Rs. " << Balance << endl;
     }
 
+    void changePIN(){
+    string oldPIN,newPIN;
+    cout<<"Enter the old PIN "<<endl;
+    cin>>oldPIN;
+
+    if(oldPIN==Pin){
+    cout<<"Enter the new PIN"<<endl;
+    cin>>newPIN;
+    Pin = newPIN;
+    cout<<"PIN change sucessfully"<<endl;
+    return ;
+    }
+    else{
+        cout<<"Wrong PIN"<<endl;
+        return;
+    }
+    
+    }
     string getAccountNumber(){
         return account_number;
     }
@@ -153,7 +171,8 @@ int main()
         cout << "2.Deposit" << endl;
         cout << "3.Withdraw" << endl;
         cout << "4.Display" << endl;
-        cout << "5.Exit" << endl;
+        cout<< "5.Change PIN"<<endl;
+        cout << "6.Exit" << endl;
         cout << "Enter your choice" << endl;
         cin >> choice;
         switch (choice)
@@ -203,6 +222,12 @@ int main()
         }
         case 5:
         {
+            int IDex = getIntputFromUser(Naccount);
+           Naccount[IDex].changePIN();
+            break;
+        }
+        case 6:
+        {
             cout << "Exit...Thank you!!" << endl;
             break;
         }
@@ -212,7 +237,7 @@ int main()
             break;
         }
         }
-    } while (choice != 5);
+    } while (choice != 6);
 
     return 0;
 }
