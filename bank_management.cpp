@@ -3,6 +3,8 @@
 #include<vector>
 #include<ctype.h>
 #include<algorithm>
+#include<fstream>
+#include<sstream>
 using namespace std;
 class bank_account
 {
@@ -83,28 +85,40 @@ public:
         cout << "Balance : Rs. " << Balance << endl;
     }
 
-    void changePIN(){
+    void changePIN()
+    {
     string oldPIN,newPIN;
-    cout<<"Enter the old PIN "<<endl;
-    cin>>oldPIN;
-
-    if(oldPIN==Pin){
+    int tries = 3;
+    
+    while(tries--){
+        cout<<"Enter 4-Digit PIN "<<endl;
+        cin>>oldPIN;
+        if(oldPIN==Pin){
+            break ;
+        }
+        else{
+            cout<<"Wrong PIN."<<endl;
+            cout<<tries<<" Tries remaining"<<endl;
+        }
+    }   
     cout<<"Enter the new PIN"<<endl;
     cin>>newPIN;
     Pin = newPIN;
     cout<<"PIN change sucessfully"<<endl;
-    return ;
+    return ;       
     }
-    else{
-        cout<<"Wrong PIN"<<endl;
-        return;
-    }
-    
+    string getAccountName(){
+        return account_name;
     }
     string getAccountNumber(){
         return account_number;
     }
-public:
+    string getAccountType(){
+        return account_type;
+    }
+    int getBalance(){
+        return Balance;
+    }
     string getPIN(){
         return Pin;
     }
@@ -155,6 +169,27 @@ bool verifingPin(bank_account &acc){
 
     return false;
 }
+void saveToFile(vector<bank_account> Naccounts){
+    ofstream file("accounts.txt");
+
+    for(auto acc:Naccounts){
+        file<< acc.getAccountName()<<"," <<acc.getAccountNumber()<<","<<acc.getAccountType()<<","<< acc.getBalance();
+    }
+    file.close();
+}
+
+// void loadTofile(vector<bank_account> &Naccount){
+//     string line;
+    
+//     ifstream file("accounts.txt");
+//     if(!file) return;
+//     while(getline(file,line)){
+//         stringstream ss(line);
+//         bank_account acc;
+//         getline(ss,acc.getAccountNumber(),',');
+//     }
+// }
+
 int main()
 {
     vector<bank_account> Naccount;
@@ -165,13 +200,13 @@ int main()
     do
         {
         
-        cout<<"\n******* WELCOME TO AC INTERNATIONAL BANK *******"<<endl;
+        cout <<"\n******* WELCOME TO AC INTERNATIONAL BANK *******"<<endl;
         cout << "\n<***** MENU *****>" << endl;
-        cout<<"1.Create New Account"<<endl;
+        cout <<"1.Create New Account"<<endl;
         cout << "2.Deposit" << endl;
         cout << "3.Withdraw" << endl;
         cout << "4.Display" << endl;
-        cout<< "5.Change PIN"<<endl;
+        cout << "5.Change PIN"<<endl;
         cout << "6.Exit" << endl;
         cout << "Enter your choice" << endl;
         cin >> choice;
@@ -184,6 +219,7 @@ int main()
             obj1.initialize();
             Naccount.push_back(obj1);
             cout << "Account created successfully\n";
+            saveToFile(Naccount);
             break;
 
         }
@@ -228,6 +264,7 @@ int main()
         }
         case 6:
         {
+            saveToFile(Naccount);
             cout << "Exit...Thank you!!" << endl;
             break;
         }
